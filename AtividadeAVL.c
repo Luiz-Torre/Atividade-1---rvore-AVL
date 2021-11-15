@@ -7,6 +7,8 @@ typedef struct arvore{
     struct arvore *dir;
 }arvore;
 
+// O verificaBalanceado é para auxiliar na verificação do inserir e remover ( saber se foi feito corretamente)
+int VerificaBalanceado(arvore *a);
 arvore *LerArvore(FILE *arq);
 void ImprimirPreOrdem(arvore *a);
 void ImprimirOrdem(arvore *a);
@@ -105,6 +107,14 @@ int main(){
         LimparArvore(a);
         break;
     default:
+        aux_balanceada =  VerificaBalanceado(a);
+        if(aux_balanceada == 0){
+            printf("Nao é balanceado");
+        }
+        else{
+            puts("É balanceado");
+        }
+        break;
         printf ("Valor invalido!\n");
     }
    
@@ -195,6 +205,21 @@ arvore *RotacionarDireitaDupla(arvore *a)
     return a;
 }
 
+int VerificaBalanceado(arvore *a){
+    if ( a->esq != NULL && a->dir != NULL  ){
+    int aux = CalcAltura(a->dir) - CalcAltura(a->esq);
+    if (abs(aux) >1){
+        return 0;
+    }
+    int result = VerificaBalanceado(a->esq);
+    if (!result) {
+        return 0;
+    }
+    return VerificaBalanceado(a->dir);
+  }
+	else {
+     return 1;}
+}
 
 
 arvore *Inserir(arvore *a, int x){
@@ -369,13 +394,16 @@ arvore *ExcluirNo(arvore *a,int x){
                 }
                 a->info=aux->info;
                 a->esq = ExcluirNo(a->esq,aux->info);
+                a = RotacionarEsquerda(a);
             }
         }
         else if(x<a->info){
             a->esq = ExcluirNo(a->esq,x);
+            a = RotacionarEsquerda(a);
         }
         else {
             a->dir = ExcluirNo(a->dir,x);
+            a = RotacionarDireita(a);
         }
     }
     return a;
