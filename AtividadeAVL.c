@@ -25,6 +25,7 @@ arvore *RotacionarEsquerdaDupla(arvore *a);
 arvore *RotacionarDireita(arvore *a);
 arvore *RotacionarDireitaSimples(arvore *a);
 arvore *RotacionarDireitaDupla(arvore *a);
+arvore *Inserir(arvore *a, int x);
 int main(){
     FILE * arq;
     int op;
@@ -163,11 +164,11 @@ arvore *RotacionarEsquerdaSimples(arvore *a){
 }
 arvore *RotacionarEsquerdaDupla(arvore *a){
     a->dir = RotacionarDireitaSimples(a->dir);
-    a = RotacaoEsqSimples(a);
+    a = RotacionarEsquerdaSimples(a);
     return a;
 }
 
-arvore *RotacaoDir(arvore *a){
+arvore *RotacionarDireita(arvore *a){
     int altura_esquerda = CalcAltura(a->esq);
     int altura_direita = CalcAltura(a->dir);
     if (fabs(altura_direita - altura_esquerda) > 1){
@@ -196,7 +197,25 @@ arvore *RotacionarDireitaDupla(arvore *a)
 
 
 
-
+arvore *Inserir(arvore *a, int x){
+    if(a == NULL){
+        a = (arvore*)malloc(sizeof(arvore));
+        a->info = x;
+        a->esq = NULL;
+        a->dir = NULL;
+    }
+    else{
+        if (x <= a->info){
+        a->esq = Inserir(a->esq,x);
+        a = RotacionarDireita(a);
+    }
+    else{
+        a->dir = Inserir(a->dir,x);
+        a = RotacionarEsquerda(a);
+    }
+    }
+    return a;
+}
 void ImprimirPreOrdem(arvore *a){
      if(a!=NULL){
          printf("%d ",a->info);
