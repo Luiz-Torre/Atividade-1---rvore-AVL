@@ -19,7 +19,12 @@ void NivelNo(arvore *a,int aux,int num_no);
 void LimparArvore(arvore* a);
 void *InserirNo(arvore *a,int x);
 arvore *ExcluirNo(arvore *a,int x);
-
+arvore *RotacionarEsquerda(arvore *a);
+arvore *RotacionarEsquerdaSimples(arvore *a);
+arvore *RotacionarEsquerdaDupla(arvore *a);
+arvore *RotacionarDireita(arvore *a);
+arvore *RotacionarDireitaSimples(arvore *a);
+arvore *RotacionarDireitaDupla(arvore *a);
 int main(){
     FILE * arq;
     int op;
@@ -131,21 +136,67 @@ arvore *LerArvore(FILE *arq){
 
     }
 }
-// arvore *RotacaoEsq(arvore *p){
-//     int altura_esquerda = CalcAltura(p->esq);
-//     int altura_direita = CalcAltura(p->dir);
-//     if (abs(altura_esquerda - altura_direita) > 1)
-//     {
-//     arvore *b = p->dir;
-//     altura_esquerda = CalcAltura(b->esq);
-//     altura_direita = CalcAltura(b->dir);
-//         if (altura_esquerda > altura_direita)
-//         p = RotacaoEsqDupla(p);
-//         else
-//         p = RotacaoEsqSimples(p);
-//         }
-//     return p;
-// }
+
+
+
+arvore *RotacionarEsquerda(arvore *a){
+    int altura_esquerda = CalcAltura(a->esq);
+    int altura_direita = CalcAltura(a->dir);
+    if (fabs(altura_esquerda - altura_direita) > 1)
+    {
+    arvore *b = a->dir;
+    altura_esquerda = CalcAltura(b->esq);
+    altura_direita = CalcAltura(b->dir);
+        if (altura_esquerda > altura_direita)
+        a = RotacionarEsquerdaDupla(a);
+        else
+        a = RotacionarEsquerdaSimples(a);
+        }
+    return a;
+}
+
+arvore *RotacionarEsquerdaSimples(arvore *a){
+    arvore *b = a->dir;
+    a->dir = b->esq;
+    b->esq = a;
+    return b;
+}
+arvore *RotacionarEsquerdaDupla(arvore *a){
+    a->dir = RotacionarDireitaSimples(a->dir);
+    a = RotacaoEsqSimples(a);
+    return a;
+}
+
+arvore *RotacaoDir(arvore *a){
+    int altura_esquerda = CalcAltura(a->esq);
+    int altura_direita = CalcAltura(a->dir);
+    if (fabs(altura_direita - altura_esquerda) > 1){
+        arvore *b = a->esq;
+        altura_esquerda = CalcAltura(a->esq);
+        altura_direita = CalcAltura(a->dir);
+        if (altura_direita > altura_esquerda)
+        a = RotacionarDireitaDupla(a);
+        else
+        a = RotacionarDireitaSimples(a);
+    }
+    return a;
+}
+arvore *RotacionarDireitaSimples(arvore  *a){
+    arvore *b = a->esq;
+    a->esq = b->dir;
+    b->dir = a;
+    return b;
+}
+arvore *RotacionarDireitaDupla(arvore *a)
+{
+    a->esq = RotacionarEsquerdaSimples(a->esq);
+    a = RotacionarDireitaSimples(a);
+    return a;
+}
+
+
+
+
 void ImprimirPreOrdem(arvore *a){
      if(a!=NULL){
          printf("%d ",a->info);
