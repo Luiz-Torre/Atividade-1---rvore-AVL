@@ -1,0 +1,3 @@
+C:/TarefasED/Arvore_AVL/cmake-build-debug/CMakeFiles/Arvore_AVL.dir
+C:/TarefasED/Arvore_AVL/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/TarefasED/Arvore_AVL/cmake-build-debug/CMakeFiles/rebuild_cache.dir
