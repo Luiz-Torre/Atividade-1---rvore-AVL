@@ -19,7 +19,6 @@ int VerificaExistencia(arvore *a, int valor_desejado);
 void NoFolhaMenor(arvore *a, int valor_desejado);
 void NivelNo(arvore *a,int aux,int num_no);
 void LimparArvore(arvore* a);
-void *InserirNo(arvore *a,int x);
 arvore *ExcluirNo(arvore *a,int x);
 arvore *RotacionarEsquerda(arvore *a);
 arvore *RotacionarEsquerdaSimples(arvore *a);
@@ -27,7 +26,7 @@ arvore *RotacionarEsquerdaDupla(arvore *a);
 arvore *RotacionarDireita(arvore *a);
 arvore *RotacionarDireitaSimples(arvore *a);
 arvore *RotacionarDireitaDupla(arvore *a);
-arvore *Inserir(arvore *a, int x);
+arvore *InserirNo(arvore *a, int x);
 int main(){
     FILE * arq;
     int op;
@@ -183,8 +182,8 @@ arvore *RotacionarDireita(arvore *a){
     int altura_direita = CalcAltura(a->dir);
     if (fabs(altura_direita - altura_esquerda) > 1){
         arvore *b = a->esq;
-        altura_esquerda = CalcAltura(a->esq);
-        altura_direita = CalcAltura(a->dir);
+        altura_esquerda = CalcAltura(b->esq);
+        altura_direita = CalcAltura(b->dir);
         if (altura_direita > altura_esquerda)
         a = RotacionarDireitaDupla(a);
         else
@@ -222,7 +221,7 @@ int VerificaBalanceado(arvore *a){
 }
 
 
-arvore *Inserir(arvore *a, int x){
+arvore *InserirNo(arvore *a, int x){
     if(a == NULL){
         a = (arvore*)malloc(sizeof(arvore));
         a->info = x;
@@ -231,13 +230,13 @@ arvore *Inserir(arvore *a, int x){
     }
     else{
         if (x <= a->info){
-        a->esq = Inserir(a->esq,x);
+        a->esq = InserirNo(a->esq,x);
         a = RotacionarDireita(a);
     }
-    else{
-        a->dir = Inserir(a->dir,x);
-        a = RotacionarEsquerda(a);
-    }
+        else{
+            a->dir = InserirNo(a->dir,x);
+            a = RotacionarEsquerda(a);
+        }
     }
     return a;
 }
@@ -355,21 +354,7 @@ void LimparArvore(arvore *a){
         free(a);
      }
 }
-void *InserirNo(arvore *a,int x){
-    if(a==NULL){
-        a = (arvore*) malloc(sizeof (arvore));
-        a->info = x;
-        a->dir= NULL;
-        a->esq= NULL;
-    }
-    else if (x <= a->info){
-        a->esq = InserirNo(a->esq,x);
-    }
-    else{
-        a->dir = InserirNo(a->dir,x);
-    }
-    return a;
-}
+
 arvore *ExcluirNo(arvore *a,int x){
     if(a !=NULL){
         if(a->info==x){
