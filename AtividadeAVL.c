@@ -182,8 +182,8 @@ arvore *RotacaoDir(arvore *a){
     return a;
 }
 arvore *RotacionarDireitaSimples(arvore  *a){
-    arvore *b = p->esq;
-    p->esq = b->dir;
+    arvore *b = a->esq;
+    a->esq = b->dir;
     b->dir = a;
     return b;
 }
